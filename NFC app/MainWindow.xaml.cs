@@ -18,13 +18,13 @@ namespace NFC_app
 
         private void InitSerial()
         {
-            serialPort = new SerialPort("COM11", 115200); // שנה ל־COM הנכון
+            serialPort = new SerialPort("COM11", 115200);
             serialPort.DataReceived += SerialPort_DataReceived;
             try
             {
                 serialPort.Open();
-                // Set initial status text with timer 
                 InitTimer();
+                StatusText.Text = "Ready. Waiting for card...";
             }
             catch (Exception ex)
             {
@@ -32,29 +32,45 @@ namespace NFC_app
             }
         }
 
-        // set timer to show "Ready. Waiting for card..." after 2 seconds
         private void InitTimer()
         {
             resetTimer = new DispatcherTimer();
             resetTimer.Interval = TimeSpan.FromSeconds(2);
             resetTimer.Tick += (s, e) =>
             {
-                
                 StatusText.Text = "Ready. Waiting for card...";
-                resetTimer.Stop(); // Stop the timer after resetting the status
-
+                GreenIndicator.Visibility = Visibility.Collapsed; 
+                resetTimer.Stop();
             };
         }
 
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            string data = serialPort.ReadLine().Trim(); 
+            string data = serialPort.ReadLine().Trim();
 
             Dispatcher.Invoke(() =>
             {
                 StatusText.Text = $"Card detected: {data}";
-                resetTimer.Stop();
-                resetTimer.Start(); // Restart the timer to reset status after 3 seconds
+                GreenIndicator.Visibility = Visibility.Visible;
+                string uid = null;
+                int uidIndex = data.IndexOf("UID:");
+                if (uidIndex != -1 && data.Length >= uidIndex + 14) 
+                {
+                    uid = data.Substring(uidIndex + 4).Replace(" ", "").ToUpper();
+                }
+
+                if (uid == "F97E2A9C")
+                {
+                    showTirza();
+                    showTirzaTxt();
+                }
+                else
+                {
+                    showSimon();
+                    showSimonTxt();
+                }
+                resetTimer.Stop(); 
+                resetTimer.Start();
             });
         }
 
@@ -63,6 +79,25 @@ namespace NFC_app
             if (serialPort?.IsOpen == true)
                 serialPort.Close();
             base.OnClosed(e);
+        }
+
+        protected void showTirza()
+        {
+            tirza.Visibility = Visibility.Visible;
+        }
+        protected void showTirzaTxt()
+        {
+            tirza_txt.Visibility = Visibility.Visible;
+        }
+
+        protected void showSimon()
+        {
+            simon.Visibility = Visibility.Visible;
+        }
+
+        protected void showSimonTxt()
+        {
+            simon_txt.Visibility = Visibility.Visible;
         }
     }
 }

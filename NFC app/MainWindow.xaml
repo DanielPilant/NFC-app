@@ -7,11 +7,55 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="450">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black" Offset="1"/>
+                <GradientStop Color="#FF2C1C65" Offset="0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
         <TextBlock x:Name="StatusText"
-                   FontSize="15"
+                   FontSize="10"
                    HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
+                   VerticalAlignment="Top"
                    Text="Waiting for card..."
-                   TextWrapping="Wrap"/>
+                   TextWrapping="Wrap"
+                   Foreground="White"
+                   Height="44"
+                   Width="430"
+                   Margin="0,392,0,0" TextAlignment="Center"/>
+
+        <!-- ריבוע אדום קבוע (אם צריך) -->
+        <Rectangle HorizontalAlignment="Center"
+                   Height="100"
+                   Margin="0,264,0,0"
+                   VerticalAlignment="Top"
+                   Width="100"
+                   Fill="#FFAD0000"/>
+
+        <Rectangle x:Name="GreenIndicator"
+                   HorizontalAlignment="Center"
+                   Height="100"
+                   Margin="0,264,0,0"
+                   VerticalAlignment="Top"
+                   Width="100"
+                   Fill="#FF00AD3A"
+                   Visibility="Collapsed"/>
+        <Grid Margin="70,459,70,215" OpacityMask="White">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF04001D" Offset="1"/>
+                    <GradientStop Color="#FF290000" Offset="0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Ellipse x:Name="tirza" Visibility="Collapsed" HorizontalAlignment="Left" Height="25" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Center" Width="25" Fill="#FF5AFF00"/>
+            <Label x:Name="tirza_txt" Visibility="Collapsed" Content="המורה תרצה נמצאת בחצר" HorizontalAlignment="Left" Margin="145,0,0,0" VerticalAlignment="Center" Width="155" Foreground="White"/>
+            <Ellipse x:Name="simon" Visibility="Collapsed" HorizontalAlignment="Left" Height="25" Margin="10,20,0,0" Stroke="Black" VerticalAlignment="Top" Width="25" Fill="#FF5AFF00" Grid.Row="1"/>
+            <Label x:Name="simon_txt" Visibility="Collapsed" Content="המורה שמעון נמצא בחצר" HorizontalAlignment="Left" Margin="145,0,0,0" VerticalAlignment="Center" Width="155" Foreground="White" Grid.Row="1"/>
+        </Grid>
     </Grid>
 </Window>
